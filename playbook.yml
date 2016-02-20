@@ -1,0 +1,8 @@
+- hosts: vagrant-test
+
+  roles:
+    - nginx
+    - php
+    - mysql
+    - wordpress
+    - postfix
