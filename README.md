@@ -21,7 +21,7 @@ config.vm.network "private_network", ip: "192.168.100.10"
 
 `ssh vagrant@192.168.100.10`
 
-### 2. Clone the repository:
+### 2. Clone the repository
 
 ```
 $ git clone https://github.com/tucsonlabs/wordpress-nginx.git
@@ -40,7 +40,7 @@ Edit the hosts file to set your web server's IP. Change `192.168.100.10` to your
 
 ```
 $ cd /wordpress-nginx
-$ ansible-playbook playbook.yml -i hosts`
+$ ansible-playbook playbook.yml -i hosts
 ```
 
 ### 5. Finish the install
