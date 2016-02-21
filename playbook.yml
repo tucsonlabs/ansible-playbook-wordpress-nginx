@@ -1,4 +1,4 @@
-- hosts: vagrant-test
+- hosts: web-server
 
   roles:
     - server
