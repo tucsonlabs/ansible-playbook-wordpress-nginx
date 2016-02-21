@@ -9,14 +9,14 @@ Ansible playbook and roles for installing WordPress + Nginx + PHP + Postfix serv
 
 ### 1. Configure your web server for ssh
 
-Allow connections from your development machine to the web server over ssh. If you're using vagrant edit your config to add these lines so you can connect to the machine over ssh through a specific IP address rather than using `vagrant ssh`:
+Allow connections from your development machine to the web server over ssh. If you're using vagrant add these lines to your **Vagrantfile**:
 
 ```
 config.vm.network :forwarded_port, guest: 80, host: 4567
 config.vm.network "private_network", ip: "192.168.100.10"
 ```
 
-`"192.168.100.10"` can be swapped out for a different IP, but make sure it matches whatever is set in your ansible inventory file. Verify that you're able to ssh into the machine:
+This allows a connection to the machine over ssh on the specified IP address. `"192.168.100.10"` can be swapped out for a different IP, but make sure it matches whatever is set in your ansible inventory file. Verify that you're able to ssh into the machine:
 
 `ssh vagrant@192.168.100.10`
 
