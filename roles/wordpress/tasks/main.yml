@@ -28,6 +28,7 @@
   replace: dest=/etc/nginx/sites-available/default regexp="(^.root /usr/share/nginx/html;)" replace="\troot /srv/www/wordpress;"
   notify:
     - restart nginx
+    - restart php5-fpm
   sudo: yes
 
 - name: Move wp-config-sample.php

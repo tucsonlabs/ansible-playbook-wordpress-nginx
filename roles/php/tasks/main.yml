@@ -18,3 +18,9 @@
   notify:
     - restart nginx
   sudo: yes
+
+- name: Add php settings
+  template: src=../../../templates/nginx-wp-common.conf dest=/etc/nginx/nginx-wp-common.conf owner=www-data group=www-data mode=0644
+  notify:
+    - restart nginx
+  sudo: yes
