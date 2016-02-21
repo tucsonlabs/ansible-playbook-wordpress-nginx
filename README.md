@@ -1,5 +1,4 @@
 # WordPress + Nginx Ansible Playbook
----
 Ansible playbook and roles for installing WordPress + Nginx + PHP + Postfix server
 
 ### Requirements
