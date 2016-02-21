@@ -17,7 +17,7 @@ config.vm.network :forwarded_port, guest: 80, host: 4567
 config.vm.network "private_network", ip: "192.168.100.10"
 ```
 
-`192.168.100.10` can be swapped out for a different IP, but make sure it matches whatever is in your ansible inventory file. Verify that you're able to ssh into the machine:
+`"192.168.100.10"` can be swapped out for a different IP, but make sure it matches whatever is set in your ansible inventory file. Verify that you're able to ssh into the machine:
 
 `ssh vagrant@192.168.100.10`
 
@@ -25,6 +25,7 @@ config.vm.network "private_network", ip: "192.168.100.10"
 
 ```
 $ git clone https://github.com/tucsonlabs/wordpress-nginx.git
+$ cd /wordpress-nginx
 ```
 
 ### 3. Set the web server IP address
@@ -39,7 +40,12 @@ Edit the hosts file to set your web server's IP. Change `192.168.100.10` to your
 ### 4. Run the playbook
 
 ```
-$ cd /wordpress-nginx
+$ ansible-playbook playbook.yml -i hosts -u YOUR_REMOTE_UER_ID -K
+```
+
+This tells ansible to use the inventory file we've called "hosts". If you're using vagrant you can run the same command as above but exclude the username and sudo prompt:
+
+```
 $ ansible-playbook playbook.yml -i hosts
 ```
 
