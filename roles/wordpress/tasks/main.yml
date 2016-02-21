@@ -7,30 +7,36 @@
   sudo: yes
 
 - name: Create webroot
-  command: mkdir /var/www
+  file:
+    state: directory
+    path: /srv/www
+    owner: root
+    group: root
+    mode: 0755
   sudo: yes
 
 - name: Extract WordPress
   unarchive:
     src: /tmp/wordpress.tar.gz
-    dest: /var/www/
+    dest: /srv/www/
+    owner: www-data
+    group: www-data
     copy: no
   sudo: yes
 
 - name: Update default Nginx site
-  sudo: yes
-  replace: dest=/etc/nginx/sites-available/default regexp="(^.root /usr/share/nginx/html;)" replace="\troot /var/www/wordpress;"
+  replace: dest=/etc/nginx/sites-available/default regexp="(^.root /usr/share/nginx/html;)" replace="\troot /srv/www/wordpress;"
   notify:
     - restart nginx
   sudo: yes
 
 - name: Move wp-config-sample.php
-  command: mv /var/www/wordpress/wp-config-sample.php /var/www/wordpress/wp-config.php creates=/var/www/wordpress/wp-config.php
+  command: mv /srv/www/wordpress/wp-config-sample.php /srv/www/wordpress/wp-config.php creates=/srv/www/wordpress/wp-config.php
   sudo: yes
 
 - name: Update WordPress config file
   lineinfile:
-    dest: /var/www/wordpress/wp-config.php
+    dest: /srv/www/wordpress/wp-config.php
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
   with_items:
