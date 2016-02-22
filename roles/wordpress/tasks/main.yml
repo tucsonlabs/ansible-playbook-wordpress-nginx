@@ -1,43 +1,46 @@
 ---
-- name: Download WordPress
-  get_url:
-    url: https://wordpress.org/latest.tar.gz
-    dest: /tmp/wordpress.tar.gz
-    validate_certs: no
-  sudo: yes
-
 - name: Create webroot
   file:
     state: directory
-    path: /srv/www
+    path: /srv/www/
     owner: root
     group: root
     mode: 0755
   sudo: yes
 
+- name: Download WordPress
+  get_url: url=https://wordpress.org/wordpress-{{ wp_version }}.tar.gz dest=/tmp/wordpress-{{ wp_version }}.tar.gz #sha256sum={{ wp_sha256sum }}
+  sudo: yes
+
+# - name: Extract WordPress archive
+#   command: chdir=/tmp /bin/tar xvf wordpress-{{ wp_version }}.tar.gz creates=/srv/www/{{server_hostname}}
+#   sudo: yes
+
 - name: Extract WordPress
   unarchive:
-    src: /tmp/wordpress.tar.gz
-    dest: /srv/www/
+    src: /tmp/wordpress-{{ wp_version }}.tar.gz
+    dest: /tmp
     owner: www-data
     group: www-data
     copy: no
   sudo: yes
 
-- name: Update default Nginx site
-  replace: dest=/etc/nginx/sites-available/default regexp="(^.root /usr/share/nginx/html;)" replace="\troot /srv/www/wordpress;"
-  notify:
-    - restart nginx
-    - restart php5-fpm
+- name: Move WordPress install files
+  command: mv /tmp/wordpress /srv/www/{{server_hostname}}
   sudo: yes
 
-- name: Move wp-config-sample.php
-  command: cp /srv/www/wordpress/wp-config-sample.php /srv/www/wordpress/wp-config.php creates=/srv/www/wordpress/wp-config.php
+- name: Fetch random salts for WordPress config
+  local_action: command curl https://api.wordpress.org/secret-key/1.1/salt/
+  register: "wp_salt"
+  sudo: no
+
+- name: Add wp-config
+  template: "src=wp-config.php dest=/srv/www/{{server_hostname}}/wp-config.php"
   sudo: yes
 
 - name: Update WordPress config file
   lineinfile:
-    dest: /srv/www/wordpress/wp-config.php
+    dest: "/srv/www/{{server_hostname}}/wp-config.php"
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
   with_items:
