@@ -17,7 +17,7 @@
 - name: Create webroot
   file:
     state: directory
-    path: {{ webroot }}
+    path: "{{ webroot }}"
     owner: root
     group: root
     mode: 0755
