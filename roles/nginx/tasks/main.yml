@@ -1,0 +1,25 @@
+---
+# tasks file for nginx
+
+- name: Update apt cache
+  apt: update_cache=yes cache_valid_time=3600
+  sudo: yes
+
+- name: Install nginx software
+  apt: name={{ item }} state=present
+  sudo: yes
+  with_items:
+    - nginx
+    - mysql-server
+    - python-mysqldb
+    - git
+
+- name: Update nginx confs for WordPress + PHP
+  template: "src=../../nginx/templates/default-site.conf dest=/etc/nginx/sites-available/{{server_hostname}} owner=www-data group=www-data mode=0644"
+  sudo: yes
+
+- name: Enable site
+  file: src=/etc/nginx/sites-available/{{server_hostname}} dest=/etc/nginx/sites-enabled/{{server_hostname}} owner=www-data group=www-data state=link
+  notify:
+    - restart nginx
+  sudo: yes

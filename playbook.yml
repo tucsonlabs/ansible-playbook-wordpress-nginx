@@ -1,8 +1,8 @@
 - hosts: web-server
 
   roles:
-    - server
+    - nginx
+    - wordpress
     - php
     - mysql
-    - wordpress
     - postfix

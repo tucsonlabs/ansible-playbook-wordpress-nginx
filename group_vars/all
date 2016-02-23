@@ -1,0 +1,20 @@
+# WordPress database settings
+wp_db_name: wordpress
+wp_db_user: wordpress
+wp_db_password: wordpress_db_password
+
+mysql_port: 3306
+
+auto_up_disable: true
+
+server_hostname: tucsonlabs.dev
+
+# WordPress Version
+wp_version: 4.4.2
+# wp_sha256sum: 42ca594afc709cbef8528a6096f5a1efe96dcf3164e7ce321e87d57ae015cc82
+
+#Define Core Update Level
+#true  = Development, minor, and major updates are all enabled
+#false = Development, minor, and major updates are all disabled
+#minor = Minor updates are enabled, development, and major updates are disabled
+core_update_level: true

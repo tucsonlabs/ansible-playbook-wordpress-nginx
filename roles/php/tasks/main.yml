@@ -5,9 +5,10 @@
   apt:
     name: "{{ item }}"
     state: present
-
   sudo: yes
   with_items:
+    - php5-fpm
+    - php5
     - php5-gd
     - libssh2-php
     - php5-mysql
@@ -20,7 +21,7 @@
   sudo: yes
 
 - name: Add php settings
-  template: src=../../../templates/nginx-wp-common.conf dest=/etc/nginx/nginx-wp-common.conf owner=www-data group=www-data mode=0644
+  template: src=../../nginx/templates/nginx-wp-common.conf dest=/etc/nginx/nginx-wp-common.conf owner=www-data group=www-data mode=0644
   notify:
     - restart nginx
   sudo: yes
