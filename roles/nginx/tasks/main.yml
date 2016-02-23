@@ -14,12 +14,21 @@
     - python-mysqldb
     - git
 
+- name: Create webroot
+  file:
+    state: directory
+    path: {{ webroot }}
+    owner: root
+    group: root
+    mode: 0755
+  sudo: yes
+
 - name: Update nginx confs for WordPress + PHP
-  template: "src=../../nginx/templates/default-site.conf dest=/etc/nginx/sites-available/{{server_hostname}} owner=www-data group=www-data mode=0644"
+  template: "src=default-site.conf dest=/etc/nginx/sites-available/{{site_name}} owner=www-data group=www-data mode=0644"
   sudo: yes
 
 - name: Enable site
-  file: src=/etc/nginx/sites-available/{{server_hostname}} dest=/etc/nginx/sites-enabled/{{server_hostname}} owner=www-data group=www-data state=link
+  file: src=/etc/nginx/sites-available/{{site_name}} dest=/etc/nginx/sites-enabled/{{site_name}} owner=www-data group=www-data state=link
   notify:
     - restart nginx
   sudo: yes
