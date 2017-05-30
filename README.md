@@ -2,8 +2,8 @@
 Ansible playbook and roles for installing WordPress + Nginx + PHP + Postfix server
 
 ### Requirements
-- Ansible 1.9.4 or newer installed on your development machine
-- Ubuntu 14.04 installed on your web server or virtual machine
+- Ansible 2.0.0 or newer
+- Ubuntu 16.04 (installed on your web server or virtual machine)
 
 ###Instructions:
 
