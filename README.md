@@ -39,7 +39,7 @@ Edit the hosts file to set your web server's IP. Change `192.168.100.10` to your
 ### 4. Run the playbook
 
 ```
-$ ansible-playbook playbook.yml -i hosts -u YOUR_REMOTE_UER_ID -K
+$ ansible-playbook playbook.yml -i hosts -u YOUR_REMOTE_USER_ID -K
 ```
 
 This tells ansible to use the inventory file we've called "hosts". If you're using vagrant you can run the same command as above but exclude the username and sudo prompt:

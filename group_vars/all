@@ -2,15 +2,16 @@
 wp_db_name: wordpress
 wp_db_user: wordpress
 wp_db_password: wordpress_db_password
-
+  
 mysql_port: 3306
+mysql_root_password: root
 
 auto_up_disable: true
 
 server_hostname: tucsonlabs.dev
 
 # WordPress Version
-wp_version: 4.4.2
+wp_version: 4.7.5
 # wp_sha256sum: 42ca594afc709cbef8528a6096f5a1efe96dcf3164e7ce321e87d57ae015cc82
 
 #Define Core Update Level

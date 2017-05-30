@@ -6,15 +6,11 @@
     owner: root
     group: root
     mode: 0755
-  sudo: yes
+  become: yes
 
 - name: Download WordPress
   get_url: url=https://wordpress.org/wordpress-{{ wp_version }}.tar.gz dest=/tmp/wordpress-{{ wp_version }}.tar.gz #sha256sum={{ wp_sha256sum }}
-  sudo: yes
-
-# - name: Extract WordPress archive
-#   command: chdir=/tmp /bin/tar xvf wordpress-{{ wp_version }}.tar.gz creates=/srv/www/{{server_hostname}}
-#   sudo: yes
+  become: yes
 
 - name: Extract WordPress
   unarchive:
@@ -23,20 +19,20 @@
     owner: www-data
     group: www-data
     copy: no
-  sudo: yes
+  become: yes
 
 - name: Move WordPress install files
   command: mv /tmp/wordpress /srv/www/{{server_hostname}}
-  sudo: yes
+  become: yes
 
 - name: Fetch random salts for WordPress config
   local_action: command curl https://api.wordpress.org/secret-key/1.1/salt/
   register: "wp_salt"
-  sudo: no
+  become: no
 
 - name: Add wp-config
   template: "src=wp-config.php dest=/srv/www/{{server_hostname}}/wp-config.php"
-  sudo: yes
+  become: yes
 
 - name: Update WordPress config file
   lineinfile:
@@ -44,7 +40,7 @@
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
   with_items:
-    - {'regexp': "define\\('DB_NAME', '(.)+'\\);", 'line': "define('DB_NAME', '{{wp_mysql_db}}');"}
-    - {'regexp': "define\\('DB_USER', '(.)+'\\);", 'line': "define('DB_USER', '{{wp_mysql_user}}');"}
-    - {'regexp': "define\\('DB_PASSWORD', '(.)+'\\);", 'line': "define('DB_PASSWORD', '{{wp_mysql_password}}');"}
-  sudo: yes
+    - {'regexp': "define\\('DB_NAME', '(.)+'\\);", 'line': "define('DB_NAME', '{{wp_db_name}}');"}
+    - {'regexp': "define\\('DB_USER', '(.)+'\\);", 'line': "define('DB_USER', '{{wp_db_user}}');"}
+    - {'regexp': "define\\('DB_PASSWORD', '(.)+'\\);", 'line': "define('DB_PASSWORD', '{{wp_db_password}}');"}
+  become: yes
