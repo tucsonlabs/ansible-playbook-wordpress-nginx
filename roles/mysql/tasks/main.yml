@@ -1,4 +1,8 @@
 ---
+
+- name: Start Mysql Service
+  service: name=mysql state=started enabled=yes
+
 - name: Create mysql database
   mysql_db:
     name: "{{ wp_mysql_db }}"
@@ -6,6 +10,6 @@
 
 - name: Create mysql user
   mysql_user:
-    name: "{{ wp_mysql_user }}"
-    password: "{{ wp_mysql_password }}"
+    name: "{{ wp_db_user }}"
+    password: "{{ wp_db_password }}"
     priv: "*.*:ALL"

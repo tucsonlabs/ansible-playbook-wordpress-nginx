@@ -2,7 +2,7 @@
 
   roles:
     - nginx
-    - wordpress
     - php
     - mysql
+    - wordpress
     - postfix

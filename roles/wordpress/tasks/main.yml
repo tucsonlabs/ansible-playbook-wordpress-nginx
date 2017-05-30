@@ -1,19 +1,11 @@
 ---
-- name: Create webroot
-  file:
-    state: directory
-    path: /srv/www/
-    owner: root
-    group: root
-    mode: 0755
-  sudo: yes
 
 - name: Download WordPress
   get_url: url=https://wordpress.org/wordpress-{{ wp_version }}.tar.gz dest=/tmp/wordpress-{{ wp_version }}.tar.gz #sha256sum={{ wp_sha256sum }}
   sudo: yes
 
 # - name: Extract WordPress archive
-#   command: chdir=/tmp /bin/tar xvf wordpress-{{ wp_version }}.tar.gz creates=/srv/www/{{server_hostname}}
+#   command: chdir=/tmp /bin/tar xvf wordpress-{{ wp_version }}.tar.gz creates={{ site_install_path }}
 #   sudo: yes
 
 - name: Extract WordPress
@@ -26,7 +18,7 @@
   sudo: yes
 
 - name: Move WordPress install files
-  command: mv /tmp/wordpress /srv/www/{{server_hostname}}
+  command: mv /tmp/wordpress {{ site_install_path }}
   sudo: yes
 
 - name: Fetch random salts for WordPress config
@@ -35,16 +27,16 @@
   sudo: no
 
 - name: Add wp-config
-  template: "src=wp-config.php dest=/srv/www/{{server_hostname}}/wp-config.php"
+  template: "src=wp-config.php dest={{ site_install_path }}/wp-config.php"
   sudo: yes
 
 - name: Update WordPress config file
   lineinfile:
-    dest: "/srv/www/{{server_hostname}}/wp-config.php"
+    dest: "{{ site_install_path }}/wp-config.php"
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
   with_items:
-    - {'regexp': "define\\('DB_NAME', '(.)+'\\);", 'line': "define('DB_NAME', '{{wp_mysql_db}}');"}
-    - {'regexp': "define\\('DB_USER', '(.)+'\\);", 'line': "define('DB_USER', '{{wp_mysql_user}}');"}
-    - {'regexp': "define\\('DB_PASSWORD', '(.)+'\\);", 'line': "define('DB_PASSWORD', '{{wp_mysql_password}}');"}
+    - {'regexp': "define\\('DB_NAME', '(.)+'\\);", 'line': "define('DB_NAME', '{{ wp_mysql_db }}');"}
+    - {'regexp': "define\\('DB_USER', '(.)+'\\);", 'line': "define('DB_USER', '{{ wp_db_user }}');"}
+    - {'regexp': "define\\('DB_PASSWORD', '(.)+'\\);", 'line': "define('DB_PASSWORD', '{{ wp_db_password }}');"}
   sudo: yes
