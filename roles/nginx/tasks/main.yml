@@ -22,8 +22,8 @@
   template: "src=../templates/default-site.conf dest=/etc/nginx/sites-available/{{server_hostname}} owner=www-data group=www-data mode=0644"
   become: yes
 
-# - name: Enable site
-#   file: src=/etc/nginx/sites-available/{{server_hostname}} dest=/etc/nginx/sites-enabled/{{server_hostname}} owner=www-data group=www-data state=link
-#   notify:
-#     - restart nginx
-#   become: yes
+- name: Enable site
+  file: src=/etc/nginx/sites-available/{{server_hostname}} dest=/etc/nginx/sites-enabled/{{server_hostname}} owner=www-data group=www-data state=link
+  notify:
+    - restart nginx
+  become: yes
