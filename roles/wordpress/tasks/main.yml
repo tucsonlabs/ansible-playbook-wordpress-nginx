@@ -9,7 +9,10 @@
   become: yes
 
 - name: Download WordPress
-  get_url: url=https://wordpress.org/wordpress-{{ wp_version }}.tar.gz dest=/tmp/wordpress-{{ wp_version }}.tar.gz #sha256sum={{ wp_sha256sum }}
+  get_url: 
+    url: https://wordpress.org/wordpress-{{ wp_version }}.tar.gz 
+    dest: /tmp/wordpress-{{ wp_version }}.tar.gz 
+    checksum: "sha1:{{ wp_sha1sum }}" 
   become: yes
 
 - name: Extract WordPress
