@@ -8,12 +8,17 @@
     mode: 0755
   become: yes
 
+- name: Check if WordPress directory exists in /srv/www
+  stat: path=/srv/www/{{server_hostname}}
+  register: check_path
+
 - name: Download WordPress
   get_url: 
     url: https://wordpress.org/wordpress-{{ wp_version }}.tar.gz 
     dest: /tmp/wordpress-{{ wp_version }}.tar.gz 
     checksum: "sha1:{{ wp_sha1sum }}" 
   become: yes
+  when: not check_path.stat.exists
 
 - name: Extract WordPress
   unarchive:
@@ -23,10 +28,12 @@
     group: www-data
     copy: no
   become: yes
+  when: not check_path.stat.exists
 
 - name: Move WordPress install files
   command: mv /tmp/wordpress /srv/www/{{server_hostname}}
   become: yes
+  when: not check_path.stat.exists
 
 - name: Fetch random salts for WordPress config
   local_action: command curl https://api.wordpress.org/secret-key/1.1/salt/
